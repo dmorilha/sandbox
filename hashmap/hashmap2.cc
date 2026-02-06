@@ -135,14 +135,16 @@ struct BucketMap : public HashMap<KEY, VALUE> {
     } else if (Base::compare_(entry->key, key)) {
         return entry->value;
     } else {
-      Node * node = entry;
-      while (nullptr != node->next) {
+      Node * last = nullptr, * node = entry;
+      while (nullptr != node) {
         if (Base::compare_(node->key, key)) {
           return node->value;
         }
+        last = node;
         node = node->next;
       }
-      node->next = new Node(key);
+      assert(nullptr != last);
+      last->next = node = new Node(key);
       return node->value;
     }
   }
@@ -165,12 +167,26 @@ std::ostream & operator << (std::ostream & o, const Record & r) {
 
 int main() {
   using MY_BUCKET_MAP = BucketMap<std::string, Record>;
+
   MY_BUCKET_MAP contacts;
   contacts["Daniel Augusto"].name = "Daniel Augusto";
   contacts["Daniel Augusto"].age = 28;
   contacts["Daniel Augusto"].telephone = 55'119'683'872'122;
   contacts["Daniel Augusto"].address = "São Paulo";
-  std::cout << contacts["Daniel Augusto"] << std::endl;
+
+  contacts["Ana Carolina"].name = "Ana Carolina";
+  contacts["Ana Carolina"].age = 32;
+  contacts["Ana Carolina"].telephone = 55'359'955'333'132;
+  contacts["Ana Carolina"].address = "Belo Horizonte";
+  
+  contacts["Artur Nogueira"].name = "Artur Nogueira";
+  contacts["Artur Nogueira"].age = 44;
+  contacts["Artur Nogueira"].telephone = 5'523'944'987'462;
+  contacts["Artur Nogueira"].address = "Salvador";
+
+  std::cout << contacts["Daniel Augusto"] << std::endl
+    << contacts["Ana Carolina"] << std::endl
+    << contacts["Artur Nogueira"] << std::endl;
 
   return 0;
 }
