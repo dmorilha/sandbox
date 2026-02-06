@@ -73,10 +73,20 @@ struct BucketMap : public HashMap<TYPE> {
   struct Node {
     Node * next = nullptr;
     TYPE value;
+    ~Node() { if (nullptr != next) { delete next; next = nullptr; } }
     Node(TYPE && v) : value(std::move(v)) { };
   };
 
   std::vector<Node *> buckets_;
+
+  ~BucketMap() {
+    for (auto & item : buckets_) {
+      if (nullptr != item) {
+        delete item;
+        item = nullptr;
+      }
+    }
+  }
 
   BucketMap(const std::size_t size = 7) : buckets_{size} { }
 
