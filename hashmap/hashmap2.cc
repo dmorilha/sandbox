@@ -1,9 +1,3 @@
-/* When it comes to collision, a hash map can have two strategies:
- *  - bucketing, when two elements hash to the same bucket, they are linked together.
- *  - open addressing, when two elements share the same hash,
- *    the second element is placed on the next available entry.
- */
-
 #include <iostream>
 #include <memory>
 #include <string>
